@@ -25,10 +25,32 @@ class BSTNode():
             self.right = BSTNode(val)
             return
     
+    def delete(self, val):
+        if self == None:
+            return self
+        if val < self.value:
+            if self.left:
+                self.left = self.left.delete(val)
+            return self
+        if val > self.value:
+            if self.right:
+                self.right = self.right.delete(val)
+            return self
+        if self.right == None:
+            return self.left
+        if self.left == None:
+            return self.right
+        min_larger_node = self.right
+        while min_larger_node.left:
+            min_larger_node = min_larger_node.left
+        self.val = min_larger_node.val
+        self.right = self.right.delete(min_larger_node.value)
+        return self
+
+    
     def exists(self, val):
         if self.value == val:
             return True
-        
 
         if val < self.value:
             if self.left:
@@ -41,6 +63,16 @@ class BSTNode():
         
         return False
 
+    def inorder(self, vals):
+        if self.left is not None:
+            self.left.inorder(vals)
+        if self.value is not None:
+            vals.append(self.value)
+        if self.right is not None:
+            self.right.inorder(vals)
+        return vals
+
+
     
 if __name__ == "__main__":
     nums = [12, 6, 18, 19, 21, 11, 3, 5, 4, 24, 18]
@@ -48,5 +80,6 @@ if __name__ == "__main__":
     for num in nums:
         bst.insert(num)
     print(bst.exists(17))
+    print(bst.inorder([]))
         
     
